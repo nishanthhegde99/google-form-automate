@@ -1,26 +1,36 @@
-# Google Form Automation (Unlimited Responses)
+# Google Form Automator
 
-Automates submitting responses to Google Forms with randomized options, varied Indian details, and continuous submission support.
+A tool to automate Google Form survey submissions with randomized Indian respondent profiles and varied choices. Includes both a **Modern Web User Interface** and a **CLI script**.
 
-## Features
+---
 
-- **Unlimited Responses Mode**: Runs continuously until stopped (`TOTAL_RESPONSES = None`).
-- **Clean Interrupt**: Stop anytime with `Ctrl + C` in the terminal without losing submitted data or breaking Chrome.
-- **Configurable Limit**: Set `TOTAL_RESPONSES = 50`, `100`, etc. if you ever want a fixed number.
-- **Randomized Survey Logic**: Each response selects distinct combinations of checkboxes, varied radio options, and rating values (4 or 5).
-- **Indian Identity Details**: Generates authentic Indian names, emails, and hostel blocks (1–6).
+## 🚀 Running the Web User Interface
 
-## Quick Start
+Launch the graphical dashboard with a single command:
 
-1. **Activate virtual environment**:
-   ```bash
-   source venv/bin/activate
-   ```
+```bash
+source venv/bin/activate
+python app.py
+```
 
-2. **Run the script**:
-   ```bash
-   python form_automation.py
-   ```
+The app will open automatically in your browser at **`http://127.0.0.1:5000`**.
 
-3. **Stop anytime**:
-   Press `Ctrl + C` in your terminal. The script will safely close the browser and show the total number of responses submitted.
+### UI Features:
+- 🔗 **Google Form Link Input**: Paste any Google Form link directly into the input field.
+- 🔢 **Custom or Unlimited Submissions**: Enter a fixed number (e.g. `50`) or check **"Run Unlimited Responses"**.
+- 🕶️ **Headless Toggle**: Option to run Chrome invisibly in the background.
+- ▶️ **Start & Stop Controls**: Start with one click, and stop cleanly whenever you want.
+- 📊 **Live Dashboard**: Real-time counters showing submitted responses vs target.
+- 📜 **Live Activity Console**: See each question, option chosen, and confirmation live as it happens.
+
+---
+
+## 💻 Alternative: Running via CLI
+
+If you prefer running directly in the terminal without a web browser:
+
+```bash
+source venv/bin/activate
+python form_automation.py
+```
+*(Press `Ctrl + C` anytime to safely halt and view total submissions).*
