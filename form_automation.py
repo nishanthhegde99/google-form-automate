@@ -6,7 +6,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeHnKuQnHaLZVL-TTXCjLIZUQMmYnoB--Kr_LINtTzuk1Z-MA/viewform?usp=header"
-TOTAL_RESPONSES = 50
+
+# Set to None for UNLIMITED responses (press Ctrl + C in terminal to stop anytime),
+# or specify a number (e.g., 50, 100, 500)
+TOTAL_RESPONSES = None
 
 # Diverse Indian First Names
 FIRST_NAMES = [
@@ -81,7 +84,6 @@ def answer_survey_question(driver, q, title, index):
         if checkboxes:
             targets = ["textbook", "academic", "cloth", "accessor", "electronic", "hostel"]
             matched = match_options_by_keywords(checkboxes, targets)
-            # Pick a varied subset of 2 to all matching items
             pick_k = random.randint(max(1, len(matched) - 2), len(matched))
             selected = random.sample(matched, pick_k)
             for c in selected:
@@ -287,8 +289,9 @@ def fill_and_submit(driver, response_num):
     wait.until(EC.presence_of_element_located((By.XPATH, '//div[@role="listitem"]')))
     questions = driver.find_elements(By.XPATH, '//div[@role="listitem"]')
 
+    target_str = str(TOTAL_RESPONSES) if TOTAL_RESPONSES is not None else "∞ (Unlimited)"
     print(f"\n==========================================")
-    print(f" [Response {response_num}/{TOTAL_RESPONSES}] Filling {len(questions)} survey questions")
+    print(f" [Response #{response_num} / {target_str}] Filling {len(questions)} survey questions")
     print(f"==========================================")
 
     for i, q in enumerate(questions, 1):
@@ -309,34 +312,50 @@ def fill_and_submit(driver, response_num):
 
     # Allow confirmation to register
     time.sleep(1.5)
-    print(f"[✓] Response {response_num}/{TOTAL_RESPONSES} successfully submitted!\n")
+    print(f"[✓] Response #{response_num} successfully submitted!\n")
 
 
 def main():
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless")  # Uncomment if you prefer running silently
+    # options.add_argument("--headless")  # Uncomment if you prefer running silently without UI
     driver = webdriver.Chrome(options=options)
 
+    submitted_count = 0
+    target_info = f"{TOTAL_RESPONSES}" if TOTAL_RESPONSES is not None else "Unlimited (Press Ctrl+C to stop)"
+    print(f"Starting Google Form automation...")
+    print(f"Target submissions: {target_info}\n")
+
     try:
-        for resp_num in range(1, TOTAL_RESPONSES + 1):
+        resp_num = 1
+        while TOTAL_RESPONSES is None or resp_num <= TOTAL_RESPONSES:
             driver.get(FORM_URL)
             fill_and_submit(driver, resp_num)
+            submitted_count += 1
 
             # Random 1-2.5s jitter between submissions
-            if resp_num < TOTAL_RESPONSES:
+            if TOTAL_RESPONSES is None or resp_num < TOTAL_RESPONSES:
                 jitter = round(random.uniform(1.0, 2.5), 1)
-                print(f"Waiting {jitter}s before next entry...")
+                print(f"Waiting {jitter}s before next entry... (Ctrl+C to stop)")
                 time.sleep(jitter)
 
+            resp_num += 1
+
         print("\n" + "*" * 55)
-        print(f"DONE! All {TOTAL_RESPONSES} customized survey responses submitted.")
+        print(f"COMPLETED! Total submitted: {submitted_count} responses.")
         print("*" * 55)
+
+    except KeyboardInterrupt:
+        print("\n\n" + "=" * 55)
+        print(f"PAUSED / STOPPED by user (Ctrl+C).")
+        print(f"Successfully submitted: {submitted_count} responses.")
+        print("=" * 55)
 
     except Exception as e:
         print(f"\n[ERROR] Automation stopped: {e}")
+        print(f"Total successfully submitted before error: {submitted_count}")
 
     finally:
-        time.sleep(2)
+        time.sleep(1)
         print("Closing browser...")
         driver.quit()
 

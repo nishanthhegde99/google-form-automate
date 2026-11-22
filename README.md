@@ -1,19 +1,26 @@
-# Google Form Automation (50 Varied Responses)
+# Google Form Automation (Unlimited Responses)
 
-Automates submitting 50 unique responses to Google Forms with randomized options and distinct text inputs.
+Automates submitting responses to Google Forms with randomized options, varied Indian details, and continuous submission support.
 
-## How it works
+## Features
 
-- **50 Iterations**: Automatically loops from response 1 to 50.
-- **Randomized Multiple Choice / Radios**: Every iteration selects a different random radio choice (`random.choice`).
-- **Randomized Checkboxes**: Selects a varied random combination of checkboxes (`random.sample`).
-- **Randomized Dropdowns**: Picks random options from dropdown menus.
-- **Context-aware Text Generation**: Generates unique names, emails, feedback comments, and suggestions so no two text responses are identical.
-- **Human-like delays**: Random delay (1 to 2.5 seconds) between submissions to prevent rate limiting.
+- **Unlimited Responses Mode**: Runs continuously until stopped (`TOTAL_RESPONSES = None`).
+- **Clean Interrupt**: Stop anytime with `Ctrl + C` in the terminal without losing submitted data or breaking Chrome.
+- **Configurable Limit**: Set `TOTAL_RESPONSES = 50`, `100`, etc. if you ever want a fixed number.
+- **Randomized Survey Logic**: Each response selects distinct combinations of checkboxes, varied radio options, and rating values (4 or 5).
+- **Indian Identity Details**: Generates authentic Indian names, emails, and hostel blocks (1–6).
 
-## Running
+## Quick Start
 
-```bash
-source venv/bin/activate
-python form_automation.py
-```
+1. **Activate virtual environment**:
+   ```bash
+   source venv/bin/activate
+   ```
+
+2. **Run the script**:
+   ```bash
+   python form_automation.py
+   ```
+
+3. **Stop anytime**:
+   Press `Ctrl + C` in your terminal. The script will safely close the browser and show the total number of responses submitted.
